@@ -63,7 +63,7 @@ async function getCachedStats(team1:string,team2:string, venue:string) {
     stats[batsman_name].last7.push({ sr: (batsman_runs / total_balls) * 100, date });
   }
 
-  let result = Object.entries(stats).map(([player, data]) => {
+  const result = Object.entries(stats).map(([player, data]) => {
     const last7 = data.last7.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()).slice(0, 7);
     return {
       player,
