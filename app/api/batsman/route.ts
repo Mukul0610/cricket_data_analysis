@@ -51,7 +51,7 @@ async function getCachedStats(team1:string,team2:string, venue:string) {
   const matches = await Batsman.find({ venue, batsman_name: { $in: playerNames } }).exec();
   
   const stats: StatsMap = {};
-  for (let match of matches) {
+  for (const match of matches) {
     const { batsman_name, batsman_runs, total_balls, date } = match;
     if (!stats[batsman_name]) {
       stats[batsman_name] = { total_runs: 0, total_balls: 0, matches: new Set(), last7: [] };
