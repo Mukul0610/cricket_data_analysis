@@ -103,3 +103,20 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: 'Failed to fetch stats' }, { status: 500 });
   }
 }
+
+const fetchData = async () => {
+  try {
+    if (team1 && team2 && venue) {
+      const response = await fetch(`https://cricket-data-analysis-gamma.vercel.app/api/batsman?team1=${team1}&team2=${team2}&venue=${venue}`);
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const data = await response.json();
+      setInitialData(data);
+    } else {
+      console.error('Team1, Team2, and Venue must be provided');
+    }
+  } catch (error) {
+    console.error('There was a problem with the fetch operation:', error);
+  }
+};

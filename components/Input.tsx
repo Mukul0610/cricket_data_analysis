@@ -50,7 +50,7 @@ export default function Input() {
   const handleRedirect = () => {
     if (!team1 || !team2 || !stadium) return alert('Select all fields!');
 
-    router.push(`/ipl?ipl_team1=${encodeURIComponent(team1)}&ipl_team2=${encodeURIComponent(team2)}&stadium=${encodeURIComponent(stadium)}`);
+    router.push(`/batsman?team1=${encodeURIComponent(team1)}&team2=${encodeURIComponent(team2)}&venue=${encodeURIComponent(stadium)}`);
   };
 
   return (
