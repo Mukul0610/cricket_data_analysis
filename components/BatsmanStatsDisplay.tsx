@@ -36,7 +36,7 @@ export function CricketAnalyticsDashboard({initialData}:Props ){
   });
   const [showFilters, setShowFilters] = useState(false);
   const [activeTab, setActiveTab] = useState('all');
-
+  setPlayers(initialData)
   // Sort function
   const requestSort = (key: keyof Player) => {
     let direction: 'ascending' | 'descending' = 'ascending';
@@ -84,7 +84,7 @@ export function CricketAnalyticsDashboard({initialData}:Props ){
   }, [sortedPlayers, searchTerm, filterConfig]);
 
   // Handle selecting players for best eleven
-  const togglePlayerSelection = (player:any) => {
+  const togglePlayerSelection = (player: Player) => {
     if (selectedPlayers.some(p => p.player === player.player)) {
       setSelectedPlayers(selectedPlayers.filter(p => p.player !== player.player));
     } else if (selectedPlayers.length < 11) {
