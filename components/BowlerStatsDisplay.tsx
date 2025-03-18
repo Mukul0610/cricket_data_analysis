@@ -5,11 +5,11 @@ import { Filter, Users } from 'lucide-react';
 
 interface Player {
   player: string;
-  strike_rate: number;
-  average: number;
+  bowler_ecoeconomy: number;
+  average_wickets: number;
   no_match_on_ground: number;
-  current_strike_rate: number;
-  current_average: number;
+  current_bowler_ecoeconomy: number;
+  current_average_wickets: number;
   latest_match_no: number;
 }
 
@@ -23,7 +23,7 @@ interface Props {
 }
 
 
-export function CricketAnalyticsDashboard({initialData}:Props ){
+export function BowlerStatsDisplay({initialData}:Props ){
   const players=initialData
   // const [players, setPlayers] = useState<Player[]>(initialData);
   const [selectedPlayers, setSelectedPlayers] = useState<Player[]>([]);
@@ -31,7 +31,7 @@ export function CricketAnalyticsDashboard({initialData}:Props ){
   const [searchTerm, setSearchTerm] = useState('');
   const [filterConfig, setFilterConfig] = useState({
     minStrikeRate: 0,
-    minAverage: 0,
+    minaverage_wickets: 0,
     minMatches: 0
   });
   const [showFilters, setShowFilters] = useState(false);
@@ -75,8 +75,8 @@ export function CricketAnalyticsDashboard({initialData}:Props ){
       
       const matchesSearch = player.player.toLowerCase().includes(searchTerm.toLowerCase());
       const matchesFilters = 
-        player.strike_rate >= filterConfig.minStrikeRate &&
-        player.average >= filterConfig.minAverage &&
+        player.bowler_ecoeconomy >= filterConfig.minStrikeRate &&
+        player.average_wickets >= filterConfig.minaverage_wickets &&
         player.no_match_on_ground >= filterConfig.minMatches;
       
       return matchesSearch && matchesFilters;
@@ -96,10 +96,10 @@ export function CricketAnalyticsDashboard({initialData}:Props ){
 
   // Auto-select best players based on current form
   const autoSelectBestEleven = () => {
-    // Simple algorithm: prioritize players with higher current averages and strike rates
+    // Simple algorithm: prioritize players with higher current average_wicketss and strike rates
     const scoredPlayers = [...players].map(player => ({
       ...player,
-      formScore: (player.current_average * 0.6) + (player.current_strike_rate * 0.4)
+      formScore: (player.current_average_wickets * 0.6) + (player.current_bowler_ecoeconomy * 0.4)
     }));
     
     // Sort by form score
@@ -113,7 +113,7 @@ export function CricketAnalyticsDashboard({initialData}:Props ){
   const resetFilters = () => {
     setFilterConfig({
       minStrikeRate: 0,
-      minAverage: 0,
+      minaverage_wickets: 0,
       minMatches: 0
     });
     setSearchTerm('');
@@ -194,18 +194,18 @@ export function CricketAnalyticsDashboard({initialData}:Props ){
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Min Average</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Min average_wickets</label>
                 <input
                   type="range"
                   min="0"
                   max="100"
-                  value={filterConfig.minAverage}
-                  onChange={(e) => setFilterConfig({...filterConfig, minAverage: Number(e.target.value)})}
+                  value={filterConfig.minaverage_wickets}
+                  onChange={(e) => setFilterConfig({...filterConfig, minaverage_wickets: Number(e.target.value)})}
                   className="w-full"
                 />
                 <div className="flex justify-between text-xs text-gray-500">
                   <span>0</span>
-                  <span>{filterConfig.minAverage}</span>
+                  <span>{filterConfig.minaverage_wickets}</span>
                   <span>100</span>
                 </div>
               </div>
@@ -280,11 +280,11 @@ export function CricketAnalyticsDashboard({initialData}:Props ){
                 <th 
                   scope="col" 
                   className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
-                  onClick={() => requestSort('average')}
+                  onClick={() => requestSort('average_wickets')}
                 >
                   <div className="flex items-center">
-                    Average
-                    {sortConfig.key === 'average' && (
+                    average_wickets
+                    {sortConfig.key === 'average_wickets' && (
                       <span className="ml-1">
                         {sortConfig.direction === 'ascending' ? '▲' : '▼'}
                       </span>
@@ -294,11 +294,11 @@ export function CricketAnalyticsDashboard({initialData}:Props ){
                 <th 
                   scope="col" 
                   className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
-                  onClick={() => requestSort('strike_rate')}
+                  onClick={() => requestSort('bowler_ecoeconomy')}
                 >
                   <div className="flex items-center">
                     Strike Rate
-                    {sortConfig.key === 'strike_rate' && (
+                    {sortConfig.key === 'bowler_ecoeconomy' && (
                       <span className="ml-1">
                         {sortConfig.direction === 'ascending' ? '▲' : '▼'}
                       </span>
@@ -308,11 +308,11 @@ export function CricketAnalyticsDashboard({initialData}:Props ){
                 <th 
                   scope="col" 
                   className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
-                  onClick={() => requestSort('current_average')}
+                  onClick={() => requestSort('current_average_wickets')}
                 >
                   <div className="flex items-center">
                     Current Form Avg
-                    {sortConfig.key === 'current_average' && (
+                    {sortConfig.key === 'current_average_wickets' && (
                       <span className="ml-1">
                         {sortConfig.direction === 'ascending' ? '▲' : '▼'}
                       </span>
@@ -322,11 +322,11 @@ export function CricketAnalyticsDashboard({initialData}:Props ){
                 <th 
                   scope="col" 
                   className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
-                  onClick={() => requestSort('current_strike_rate')}
+                  onClick={() => requestSort('current_bowler_ecoeconomy')}
                 >
                   <div className="flex items-center">
                     Current Form SR
-                    {sortConfig.key === 'current_strike_rate' && (
+                    {sortConfig.key === 'current_bowler_ecoeconomy' && (
                       <span className="ml-1">
                         {sortConfig.direction === 'ascending' ? '▲' : '▼'}
                       </span>
@@ -364,23 +364,23 @@ export function CricketAnalyticsDashboard({initialData}:Props ){
                     <div className="font-medium text-gray-900">{player.player}</div>
                   </td>
                   <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
-                    {player.average != null ? player.average.toFixed(2) : 'N/A'}
+                    {player.average_wickets != null ? player.average_wickets.toFixed(2) : 'N/A'}
                   </td>
                   <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
-                    {player.strike_rate != null ? player.strike_rate.toFixed(2) : 'N/A'}
+                    {player.bowler_ecoeconomy != null ? player.bowler_ecoeconomy.toFixed(2) : 'N/A'}
                   </td>
                   <td className="px-4 py-3 whitespace-nowrap text-sm">
                     <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                      player.current_average != null && player.current_average > player.average ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                      player.current_average_wickets != null && player.current_average_wickets > player.average_wickets ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
                     }`}>
-                      {player.current_average != null ? player.current_average.toFixed(2) : 'N/A'}
+                      {player.current_average_wickets != null ? player.current_average_wickets.toFixed(2) : 'N/A'}
                     </span>
                   </td>
                   <td className="px-4 py-3 whitespace-nowrap text-sm">
                     <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                      player.current_strike_rate != null && player.current_strike_rate > player.strike_rate ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                      player.current_bowler_ecoeconomy != null && player.current_bowler_ecoeconomy > player.bowler_ecoeconomy ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
                     }`}>
-                      {player.current_strike_rate != null ? player.current_strike_rate.toFixed(2) : 'N/A'}
+                      {player.current_bowler_ecoeconomy != null ? player.current_bowler_ecoeconomy.toFixed(2) : 'N/A'}
                     </span>
                   </td>
                   <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
