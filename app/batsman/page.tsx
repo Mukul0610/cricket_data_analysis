@@ -45,8 +45,6 @@ export default async function CategoryPage({
   if (team1 && team2 && venue) {
     const data = await getQuotes(team1, team2, venue);
     stats = data.stats; // Assign the fetched stats to the variable
-
-console.log(stats)
   }
   
   return (

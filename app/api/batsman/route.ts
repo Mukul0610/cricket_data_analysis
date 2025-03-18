@@ -28,7 +28,9 @@ interface PlayerStats {
   total_runs: number;
   total_balls: number;
   matches: Set<string>;
-  last7: Array<{ sr: number; date: Date }>;
+  last7: Array<{ sr: number; date: Date ,batsman_runs:number}>;
+  
+  
 }
 
 interface StatsMap {
@@ -49,7 +51,8 @@ async function getCachedStats(team1:string,team2:string, venue:string) {
   
 
   const matches = await Batsman.find({ venue, batsman_name: { $in: playerNames } }).exec();
-  
+  const all_matches=await Batsman.find({ batsman_name: { $in: playerNames } }).exec();
+
   const stats: StatsMap = {};
   for (const match of matches) {
     const { batsman_name, batsman_runs, total_balls, date } = match;
@@ -60,18 +63,27 @@ async function getCachedStats(team1:string,team2:string, venue:string) {
     stats[batsman_name].total_runs += batsman_runs;
     stats[batsman_name].total_balls += total_balls;
     stats[batsman_name].matches.add(match.match_id);
-    stats[batsman_name].last7.push({ sr: (batsman_runs / total_balls) * 100, date });
+    
+  }
+  for (const match of all_matches) {
+    const { batsman_name, batsman_runs, total_balls, date } = match;
+    if (!stats[batsman_name]) {
+      stats[batsman_name] = { total_runs: 0, total_balls: 0, matches: new Set(), last7: []};
+    }
+    stats[batsman_name].last7.push({ sr: (batsman_runs / total_balls) * 100,batsman_runs, date, });//these are total runs of a player
+    
   }
 
   const result = Object.entries(stats).map(([player, data]) => {
     const last7 = data.last7.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()).slice(0, 7);
+    
     return {
       player,
       strike_rate: (data.total_runs / data.total_balls) * 100,
       average: data.total_runs / data.matches.size,
       no_match_on_ground:data.matches.size,
       current_strike_rate: last7.reduce((sum, g) => sum + g.sr, 0) / last7.length || 0,
-      current_average: data.total_runs / (last7.length || 1),
+      current_average: last7.reduce((sum, g) => sum + g.batsman_runs, 0) / last7.length || 0,
       latest_match_no:(last7.length || 0)
 }});
 

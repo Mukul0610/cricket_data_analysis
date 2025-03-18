@@ -468,6 +468,7 @@
 
 import React, { useState } from 'react';
 import { Ticket as Cricket, Radius as Stadium, Shield } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 const teams = [
   {'id':'csk','name':'Chennai Super Kings'},
@@ -511,15 +512,17 @@ export default function Input() {
   const [team1, setTeam1] = useState('');
   const [team2, setTeam2] = useState('');
   const [stadium, setStadium] = useState('');
+  const router = useRouter();
 
   const handleRedirect = () => {
     if (!team1 || !team2 || !stadium) return alert('Please select all fields!');
-    // Router functionality would go here
+    router.push(`/batsman?team1=${encodeURIComponent(team1)}&team2=${encodeURIComponent(team2)}&venue=${encodeURIComponent(stadium)}`);
   };
 
   const handleBowler = () => {
     if (!team1 || !team2 || !stadium) return alert('Please select all fields!');
-    // Router functionality would go here
+    router.push(`/bowler?team1=${encodeURIComponent(team1)}&team2=${encodeURIComponent(team2)}&venue=${encodeURIComponent(stadium)}`);
+  
   };
 
   return (

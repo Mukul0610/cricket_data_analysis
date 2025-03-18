@@ -24,8 +24,8 @@ interface Props {
 
 
 export function CricketAnalyticsDashboard({initialData}:Props ){
-  
-  const [players, setPlayers] = useState<Player[]>(initialData);
+  const players=initialData
+  // const [players, setPlayers] = useState<Player[]>(initialData);
   const [selectedPlayers, setSelectedPlayers] = useState<Player[]>([]);
   const [sortConfig, setSortConfig] = useState<SortConfig>({ key: null, direction: 'ascending' });
   const [searchTerm, setSearchTerm] = useState('');
@@ -36,7 +36,7 @@ export function CricketAnalyticsDashboard({initialData}:Props ){
   });
   const [showFilters, setShowFilters] = useState(false);
   const [activeTab, setActiveTab] = useState('all');
-  setPlayers(initialData)
+  // setPlayers(initialData)
   // Sort function
   const requestSort = (key: keyof Player) => {
     let direction: 'ascending' | 'descending' = 'ascending';
