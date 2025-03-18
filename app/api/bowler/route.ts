@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
 import { connectToDatabase } from '@/lib/mongoose';
 import Team from '@/lib/models/teams.model';
-import Batsman from '@/lib/models/batsman.model';
 import Bowler from '@/lib/models/bowler.model';
 
 
