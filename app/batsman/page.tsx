@@ -1,31 +1,6 @@
-// import { useEffect } from 'react';
-// import { useRouter } from 'next/router';
-
-import CricketAnalyticsDashboard from "@/components/BatsmanStatsDisplay";
-
-// export default function BatsmanPage() {
-//   const router = useRouter();
-
-//   useEffect(() => {
-//     const { team1, team2, venue } = router.query;
-//     if (team1 && team2 && venue) {
-//       console.log(`Team 1: ${team1}, Team 2: ${team2}, Venue: ${venue}`);
-//     }
-//   }, [router.query]);
-
-//   return (
-//     <div>
-//       <h1>Batsman Page</h1>
-//     </div>
-//   );
-// }
+import { CricketAnalyticsDashboard } from "@/components/BatsmanStatsDisplay";
 
 
-
-
-// interface PageParams {
-//   category: string;
-// }
 
 interface PageSearchParams {
   team1?: string;
@@ -38,7 +13,21 @@ interface Props {
   searchParams: Promise<PageSearchParams>;
 }
 
-
+async function getQuotes(team1: string, team2: string,venue:string) {
+  const encodedTeam1 = encodeURIComponent(team1);
+  const encodedTeam2 = encodeURIComponent(team2);
+  const encodedVenue = encodeURIComponent(venue);
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/batsman?team1=${encodedTeam1}&team2=${encodedTeam2}&venue=${encodedVenue}`,
+    { cache: 'no-store' }
+  );
+  
+  if (!response.ok) {
+    throw new Error('Failed to fetch quotes');
+  }
+  
+  return response.json();
+}
 
 export default async function CategoryPage({ 
   
@@ -52,15 +41,20 @@ export default async function CategoryPage({
   const team2 = resolvedSearchParams.team2;
   const venue = resolvedSearchParams.venue;
   
+  let stats = []; // Initialize stats as an empty array
+  if (team1 && team2 && venue) {
+    const data = await getQuotes(team1, team2, venue);
+    stats = data.stats; // Assign the fetched stats to the variable
 
+console.log(stats)
+  }
   
-  
-  
-
   return (
     <main className="min-h-screen bg-[#f5efe9] py-12">
-      {team1} and {team2} and {venue}
-      <CricketAnalyticsDashboard team1={team1} team2={team2} venue={venue}/>
+      <h1 className="text-3xl font-bold text-center mb-4">
+        {team1} vs {team2} at {venue}
+      </h1>
+       <CricketAnalyticsDashboard initialData={stats} />
     </main>
   );
 }

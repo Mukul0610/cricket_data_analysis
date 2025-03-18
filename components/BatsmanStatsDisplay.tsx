@@ -1,6 +1,6 @@
 "use client"
-import React, { useState, useMemo, useEffect } from 'react';
-import { Filter, Users, TrendingUp, BarChart2, ArrowUp, ArrowDown } from 'lucide-react';
+import React, { useState, useMemo } from 'react';
+import { Filter, Users } from 'lucide-react';
 // import { getCachedStats } from '@/lib/actions/batsman.action';
 
 interface Player {
@@ -19,47 +19,12 @@ interface SortConfig {
 }
 
 interface Props {
-  team1?: string;
-  team2?: string;
-  venue?: string;
+  initialData: Player[];
 }
 
-const CricketAnalyticsDashboard: React.FC<Props> = ({ team1, team2, venue }) => {
-  // Sample data (expanded with more players)
-  const [initialData, setInitialData] = useState<Player[]>([]);
+
+export function CricketAnalyticsDashboard({initialData}:Props ){
   
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        //  const response=await fetch(`https://cricket-data-analysis-gamma.vercel.app/api/batsman?team1=${team1}&team2=${team2}&venue=${venue}`)
-        // if (team1 && team2 && venue) {
-        //   const data = await getCachedStats(team1, team2, venue);
-        //   setInitialData(data);
-        // } else {
-        //   console.error('Team1, Team2, and Venue must be provided');
-        // }
-        
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}api/batsman?team1=${team1}&team2=${team2}&venue=${venue}`,
-          { cache: 'no-store' }
-        );
-        if (!response.ok) {
-          const data = await response.json()
-          setInitialData(data);
-          
-        } else {
-          console.error('Team1, Team2, and Venue must be provided');
-        }
-        
-      } catch (error) {
-        console.error('There was a problem with the fetch operation:', error);
-        
-      }
-    };
-
-    fetchData();
-  }, [team1, team2, venue]);
-
   const [players, setPlayers] = useState<Player[]>(initialData);
   const [selectedPlayers, setSelectedPlayers] = useState<Player[]>([]);
   const [sortConfig, setSortConfig] = useState<SortConfig>({ key: null, direction: 'ascending' });
@@ -103,11 +68,17 @@ const CricketAnalyticsDashboard: React.FC<Props> = ({ team1, team2, venue }) => 
   // Apply filters and search
   const filteredPlayers = useMemo(() => {
     return sortedPlayers.filter(player => {
+      // Check if player is defined and has the 'player' property
+      if (!player || !player.player) {
+        return false; // Skip this entry if player is undefined or does not have a 'player' property
+      }
+      
       const matchesSearch = player.player.toLowerCase().includes(searchTerm.toLowerCase());
       const matchesFilters = 
         player.strike_rate >= filterConfig.minStrikeRate &&
         player.average >= filterConfig.minAverage &&
         player.no_match_on_ground >= filterConfig.minMatches;
+      
       return matchesSearch && matchesFilters;
     });
   }, [sortedPlayers, searchTerm, filterConfig]);
@@ -432,4 +403,3 @@ const CricketAnalyticsDashboard: React.FC<Props> = ({ team1, team2, venue }) => 
   );
 };
 
-export default CricketAnalyticsDashboard;
