@@ -265,7 +265,7 @@ export function CricketAnalyticsDashboard({initialData}:Props ){
                 </th>
                 <th 
                   scope="col" 
-                  className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
+                  className="px-4 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
                   onClick={() => requestSort('player')}
                 >
                   <div className="flex items-center">
@@ -279,11 +279,12 @@ export function CricketAnalyticsDashboard({initialData}:Props ){
                 </th>
                 <th 
                   scope="col" 
-                  className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
+                  className="px-4 py-3 text-left text-xs font-medium text-gray-500  tracking-wider cursor-pointer"
                   onClick={() => requestSort('average')}
                 >
                   <div className="flex items-center">
-                    Average
+                    <div className='flex flex-col justify-center items-center'><span>AVERAGE</span><span className='text-[90%]'>(on Venue)</span> </div>
+                    
                     {sortConfig.key === 'average' && (
                       <span className="ml-1">
                         {sortConfig.direction === 'ascending' ? '▲' : '▼'}
@@ -293,11 +294,12 @@ export function CricketAnalyticsDashboard({initialData}:Props ){
                 </th>
                 <th 
                   scope="col" 
-                  className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
+                  className="px-4 py-3 text-left text-xs font-medium text-gray-500 tracking-wider cursor-pointer"
                   onClick={() => requestSort('strike_rate')}
                 >
                   <div className="flex items-center">
-                    Strike Rate
+                    
+                    <div className='flex flex-col justify-center items-center'><span>STRIKE RATE</span><span className='text-[90%]'>(on Venue)</span> </div>
                     {sortConfig.key === 'strike_rate' && (
                       <span className="ml-1">
                         {sortConfig.direction === 'ascending' ? '▲' : '▼'}
@@ -307,11 +309,12 @@ export function CricketAnalyticsDashboard({initialData}:Props ){
                 </th>
                 <th 
                   scope="col" 
-                  className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
+                  className="px-4 py-3 text-left text-xs font-medium text-gray-500 tracking-wider cursor-pointer"
                   onClick={() => requestSort('current_average')}
                 >
                   <div className="flex items-center">
-                    Current Form Avg
+                    
+                    <div className='flex flex-col justify-center items-center'><span >CURRENT AVG</span><span className="text-[90%]">(last 7 game avg)</span> </div>
                     {sortConfig.key === 'current_average' && (
                       <span className="ml-1">
                         {sortConfig.direction === 'ascending' ? '▲' : '▼'}
@@ -321,11 +324,12 @@ export function CricketAnalyticsDashboard({initialData}:Props ){
                 </th>
                 <th 
                   scope="col" 
-                  className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
+                  className="px-4 py-3 text-left text-xs font-medium text-gray-500 tracking-wider cursor-pointer"
                   onClick={() => requestSort('current_strike_rate')}
                 >
                   <div className="flex items-center">
-                    Current Form SR
+                   
+                    <div className='flex flex-col justify-center items-center'><span >CURRENT SR</span><span className="text-[90%]">(last 7 game SR)</span> </div>
                     {sortConfig.key === 'current_strike_rate' && (
                       <span className="ml-1">
                         {sortConfig.direction === 'ascending' ? '▲' : '▼'}
@@ -335,11 +339,11 @@ export function CricketAnalyticsDashboard({initialData}:Props ){
                 </th>
                 <th 
                   scope="col" 
-                  className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
+                  className="px-4 py-3 text-left text-xs font-medium text-gray-500 tracking-wider cursor-pointer"
                   onClick={() => requestSort('no_match_on_ground')}
                 >
                   <div className="flex items-center">
-                    Matches at Venue
+                    <div className='flex flex-col justify-center items-center'><span >NUM OF MATCHS</span><span className="text-[90%]">(on Venue)</span> </div>
                     {sortConfig.key === 'no_match_on_ground' && (
                       <span className="ml-1">
                         {sortConfig.direction === 'ascending' ? '▲' : '▼'}
