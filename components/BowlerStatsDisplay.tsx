@@ -701,7 +701,8 @@ export function BowlerStatsDisplay({initialData}:Props ){
                   onClick={() => requestSort('average_wickets')}
                 >
                   <div className="flex items-center">
-                    Avg Wickets
+                    
+                    <div className='flex flex-col justify-center items-center'><span>AVG WICKETS</span><span className='text-[90%]'>(on Venue)</span> </div>
                     {sortConfig.key === 'average_wickets' && (
                       <span className="ml-1">
                         {sortConfig.direction === 'ascending' ? '▲' : '▼'}
@@ -715,7 +716,8 @@ export function BowlerStatsDisplay({initialData}:Props ){
                   onClick={() => requestSort('bowler_ecoeconomy')}
                 >
                   <div className="flex items-center">
-                    Economy Rate
+                    
+                    <div className='flex flex-col justify-center items-center'><span>ECONOMY RATE</span><span className='text-[90%]'>(on Venue)</span> </div>
                     {sortConfig.key === 'bowler_ecoeconomy' && (
                       <span className="ml-1">
                         {sortConfig.direction === 'ascending' ? '▼' : '▲'}
@@ -729,7 +731,8 @@ export function BowlerStatsDisplay({initialData}:Props ){
                   onClick={() => requestSort('current_average_wickets')}
                 >
                   <div className="flex items-center">
-                    Current Form Wickets
+                   
+                    <div className='flex flex-col justify-center items-center'><span>CURRENT AVG WICK</span><span className='text-[90%]'>(Last 7 game avg)</span> </div>
                     {sortConfig.key === 'current_average_wickets' && (
                       <span className="ml-1">
                         {sortConfig.direction === 'ascending' ? '▲' : '▼'}
@@ -743,7 +746,8 @@ export function BowlerStatsDisplay({initialData}:Props ){
                   onClick={() => requestSort('current_bowler_ecoeconomy')}
                 >
                   <div className="flex items-center">
-                    Current Form Economy
+                  
+                    <div className='flex flex-col justify-center items-center'><span>CURRENT ECONOMY</span><span className='text-[90%]'>(Last 7 game eco)</span> </div>
                     {sortConfig.key === 'current_bowler_ecoeconomy' && (
                       <span className="ml-1">
                         {sortConfig.direction === 'ascending' ? '▼' : '▲'}
