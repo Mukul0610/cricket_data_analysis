@@ -49,7 +49,7 @@ export default function Input() {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
-  const handleRedirect = (type:any) => {
+  const handleRedirect = (type: string) => {
     if (!team1 || !team2 || !stadium) {
       alert('Select all fields!');
       return;
