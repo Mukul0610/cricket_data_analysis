@@ -78,13 +78,13 @@ export default function Input() {
           <div className="grid grid-cols-1 gap-6 md:grid-cols-3 mb-8">
             <div className="space-y-2">
               <label className="block text-sm font-medium text-gray-700">Team 1</label>
-              <div className="relative">
+              <div className="relative text-gray-500" >
                 <select 
                   value={team1}
                   onChange={(e) => setTeam1(e.target.value)}
                   className="block w-full pl-3 pr-10 py-3 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 rounded-lg shadow-sm"
                 >
-                  <option value="">Select Team 1</option>
+                  <option value="" >Select Team 1</option>
                   {teams.map((team) => (
                     <option key={team.id} value={team.id}>{team.name}</option>
                   ))}
@@ -95,7 +95,7 @@ export default function Input() {
 
             <div className="space-y-2">
               <label className="block text-sm font-medium text-gray-700">Team 2</label>
-              <div className="relative">
+              <div className="relative text-gray-500">
                 <select 
                   value={team2}
                   onChange={(e) => setTeam2(e.target.value)}
@@ -112,7 +112,7 @@ export default function Input() {
 
             <div className="space-y-2">
               <label className="block text-sm font-medium text-gray-700">Stadium</label>
-              <div className="relative">
+              <div className="relative text-gray-500">
                 <select 
                   value={stadium}
                   onChange={(e) => setStadium(e.target.value)}
