@@ -212,7 +212,7 @@ async function getCachedStats(team1: string, team2: string, venue: string) {
   }).sort({ date: -1 }).exec();
   
   // Process recent matches for current form
-  const playerRecentMatches: { [key: string]: any[] } = {};
+  const playerRecentMatches: { [key: string]: { eco: number; bowler_wicket: number; date: Date }[] } = {};
   
   for (const match of recentMatches) {
     const { bowler, total_runs, bowler_wicket, non_extra_balls, date } = match;
