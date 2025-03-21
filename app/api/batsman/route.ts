@@ -1,8 +1,126 @@
+// import { NextResponse } from 'next/server';
+// import { connectToDatabase } from '@/lib/mongoose';
+// import Team from '@/lib/models/teams.model';
+// import Batsman from '@/lib/models/batsman.model';
+
+
+// const CACHE_DURATION = 3600; // 1 hour in seconds
+
+// interface StatsResult {
+//   player: string;
+//   strike_rate: number;
+//   no_match_on_ground: number;
+//   average: number;
+//   current_strike_rate: number;
+//   current_average: number;
+//   latest_match_no: number;
+// }
+
+// let statsCache: {
+//   data: StatsResult[] | null;
+//   timestamp: number;
+// } = {
+//   data: null,
+//   timestamp: 0,
+// };
+
+// interface PlayerStats {
+//   total_runs: number;
+//   total_balls: number;
+//   matches: Set<string>;
+//   last7: Array<{ sr: number; date: Date ,batsman_runs:number}>;
+  
+  
+// }
+
+// interface StatsMap {
+//   [key: string]: PlayerStats;
+// }
+
+// async function getCachedStats(team1:string,team2:string, venue:string) {
+//   const currentTime = Date.now();
+//   if (statsCache.data && (currentTime - statsCache.timestamp) / 1000 < CACHE_DURATION) {
+//     return statsCache.data;
+//   }
+//   await connectToDatabase()
+//   // console.log(`Searching for team: ${team}, venue: ${venue}`);
+  
+
+//   const players = await Team.find({ "team": { $in: [team1, team2] } }).exec();
+//   const playerNames = players.map(p => p["player_name"].trim());
+  
+
+//   const matches = await Batsman.find({ venue, batsman_name: { $in: playerNames } }).exec();
+//   const all_matches=await Batsman.find({ batsman_name: { $in: playerNames } }).exec();
+
+//   const stats: StatsMap = {};
+//   for (const match of matches) {
+//     const { batsman_name, batsman_runs, total_balls } = match;
+//     if (!stats[batsman_name]) {
+//       stats[batsman_name] = { total_runs: 0, total_balls: 0, matches: new Set(), last7: [] };
+//     }
+
+//     stats[batsman_name].total_runs += batsman_runs;
+//     stats[batsman_name].total_balls += total_balls;
+//     stats[batsman_name].matches.add(match.match_id);
+    
+//   }
+//   for (const match of all_matches) {
+//     const { batsman_name, batsman_runs, total_balls, date } = match;
+//     if (!stats[batsman_name]) {
+//       stats[batsman_name] = { total_runs: 0, total_balls: 0, matches: new Set(), last7: []};
+//     }
+//     stats[batsman_name].last7.push({ sr: (batsman_runs / total_balls) * 100,batsman_runs, date, });//these are total runs of a player
+    
+//   }
+
+//   const result = Object.entries(stats).map(([player, data]) => {
+//     const last7 = data.last7.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()).slice(0, 7);
+    
+//     return {
+//       player,
+//       strike_rate: (data.total_runs / data.total_balls) * 100,
+//       average: data.total_runs / data.matches.size,
+//       no_match_on_ground:data.matches.size,
+//       current_strike_rate: last7.reduce((sum, g) => sum + g.sr, 0) / last7.length || 0,
+//       current_average: last7.reduce((sum, g) => sum + g.batsman_runs, 0) / last7.length || 0,
+//       latest_match_no:(last7.length || 0)
+// }});
+
+//   statsCache = { data: result, timestamp: currentTime };
+//   return result;
+// }
+
+// export async function GET(request: Request) {
+//   try {
+//     const { searchParams } = new URL(request.url);
+//     const team1 = searchParams.get('team1');
+//     const team2 = searchParams.get('team2');
+//     const venue = searchParams.get('venue');
+
+//     if (!team1||!team2 || !venue) {
+//       return NextResponse.json({ error: "Missing team or venue parameter" }, { status: 400 });
+//     }
+
+//     const stats = await getCachedStats(team1, team2, venue!);
+
+//     return NextResponse.json({ stats }, {
+//       headers: {
+//         'Cache-Control': `public, max-age=${CACHE_DURATION}`,
+//         'Vary': 'Accept-Encoding'
+//       }
+//     });
+//   } catch (error) {
+//     console.error('Error fetching stats:', error);
+//     return NextResponse.json({ error: 'Failed to fetch stats' }, { status: 500 });
+//   }
+// }
+
+
 import { NextResponse } from 'next/server';
 import { connectToDatabase } from '@/lib/mongoose';
 import Team from '@/lib/models/teams.model';
 import Batsman from '@/lib/models/batsman.model';
-
 
 const CACHE_DURATION = 3600; // 1 hour in seconds
 
@@ -16,78 +134,116 @@ interface StatsResult {
   latest_match_no: number;
 }
 
-let statsCache: {
-  data: StatsResult[] | null;
-  timestamp: number;
-} = {
-  data: null,
-  timestamp: 0,
-};
+// Use a cache object that keys by the query parameters
+const statsCache: {
+  [key: string]: {
+    data: StatsResult[];
+    timestamp: number;
+  }
+} = {};
 
 interface PlayerStats {
   total_runs: number;
   total_balls: number;
   matches: Set<string>;
-  last7: Array<{ sr: number; date: Date ,batsman_runs:number}>;
-  
-  
+  last7: Array<{ sr: number; date: Date; batsman_runs: number }>;
 }
 
 interface StatsMap {
   [key: string]: PlayerStats;
 }
 
-async function getCachedStats(team1:string,team2:string, venue:string) {
+async function getCachedStats(team1: string, team2: string, venue: string) {
+  // Create a cache key based on the parameters
+  const cacheKey = `${team1}_${team2}_${venue}`;
   const currentTime = Date.now();
-  if (statsCache.data && (currentTime - statsCache.timestamp) / 1000 < CACHE_DURATION) {
-    return statsCache.data;
-  }
-  await connectToDatabase()
-  // console.log(`Searching for team: ${team}, venue: ${venue}`);
   
-
+  // Check if we have valid cache for this specific query
+  if (
+    statsCache[cacheKey] && 
+    (currentTime - statsCache[cacheKey].timestamp) / 1000 < CACHE_DURATION
+  ) {
+    return statsCache[cacheKey].data;
+  }
+  
+  await connectToDatabase();
+  
+  // Get players from both teams
   const players = await Team.find({ "team": { $in: [team1, team2] } }).exec();
   const playerNames = players.map(p => p["player_name"].trim());
   
-
-  const matches = await Batsman.find({ venue, batsman_name: { $in: playerNames } }).exec();
-  const all_matches=await Batsman.find({ batsman_name: { $in: playerNames } }).exec();
-
+  // Get matches at the specific venue for these players
+  const venueMatches = await Batsman.find({ 
+    venue, 
+    batsman_name: { $in: playerNames } 
+  }).exec();
+  
+  // Initialize stats object
   const stats: StatsMap = {};
-  for (const match of matches) {
+  
+  // Process venue-specific matches
+  for (const match of venueMatches) {
     const { batsman_name, batsman_runs, total_balls } = match;
     if (!stats[batsman_name]) {
-      stats[batsman_name] = { total_runs: 0, total_balls: 0, matches: new Set(), last7: [] };
+      stats[batsman_name] = { 
+        total_runs: 0, 
+        total_balls: 0, 
+        matches: new Set(), 
+        last7: [] 
+      };
     }
 
     stats[batsman_name].total_runs += batsman_runs;
     stats[batsman_name].total_balls += total_balls;
     stats[batsman_name].matches.add(match.match_id);
-    
   }
-  for (const match of all_matches) {
+  
+  // Get recent matches for these players (for current form calculation)
+  const recentMatches = await Batsman.find({ 
+    batsman_name: { $in: playerNames } 
+  }).sort({ date: -1 }).exec();
+  
+  // Process recent matches for current form
+  const playerRecentMatches: { [key: string]: any[] } = {};
+  
+  for (const match of recentMatches) {
     const { batsman_name, batsman_runs, total_balls, date } = match;
-    if (!stats[batsman_name]) {
-      stats[batsman_name] = { total_runs: 0, total_balls: 0, matches: new Set(), last7: []};
-    }
-    stats[batsman_name].last7.push({ sr: (batsman_runs / total_balls) * 100,batsman_runs, date, });//these are total runs of a player
     
+    if (!playerRecentMatches[batsman_name]) {
+      playerRecentMatches[batsman_name] = [];
+    }
+    
+    // Only add to the recent matches if we haven't collected 7 yet
+    if (playerRecentMatches[batsman_name].length < 7) {
+      playerRecentMatches[batsman_name].push({
+        sr: total_balls > 0 ? (batsman_runs / total_balls) * 100 : 0,
+        batsman_runs,
+        date
+      });
+    }
   }
-
+  
+  // Create the result
   const result = Object.entries(stats).map(([player, data]) => {
-    const last7 = data.last7.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()).slice(0, 7);
+    const last7 = playerRecentMatches[player] || [];
     
     return {
       player,
-      strike_rate: (data.total_runs / data.total_balls) * 100,
-      average: data.total_runs / data.matches.size,
-      no_match_on_ground:data.matches.size,
-      current_strike_rate: last7.reduce((sum, g) => sum + g.sr, 0) / last7.length || 0,
-      current_average: last7.reduce((sum, g) => sum + g.batsman_runs, 0) / last7.length || 0,
-      latest_match_no:(last7.length || 0)
-}});
+      strike_rate: data.total_balls > 0 ? (data.total_runs / data.total_balls) * 100 : 0,
+      average: data.matches.size > 0 ? data.total_runs / data.matches.size : 0,
+      no_match_on_ground: data.matches.size,
+      current_strike_rate: last7.length > 0 
+        ? last7.reduce((sum, g) => sum + g.sr, 0) / last7.length 
+        : 0,
+      current_average: last7.length > 0 
+        ? last7.reduce((sum, g) => sum + g.batsman_runs, 0) / last7.length 
+        : 0,
+      latest_match_no: last7.length
+    };
+  });
 
-  statsCache = { data: result, timestamp: currentTime };
+  // Store in cache with this specific key
+  statsCache[cacheKey] = { data: result, timestamp: currentTime };
   return result;
 }
 
@@ -98,11 +254,11 @@ export async function GET(request: Request) {
     const team2 = searchParams.get('team2');
     const venue = searchParams.get('venue');
 
-    if (!team1||!team2 || !venue) {
+    if (!team1 || !team2 || !venue) {
       return NextResponse.json({ error: "Missing team or venue parameter" }, { status: 400 });
     }
 
-    const stats = await getCachedStats(team1, team2, venue!);
+    const stats = await getCachedStats(team1, team2, venue);
 
     return NextResponse.json({ stats }, {
       headers: {
