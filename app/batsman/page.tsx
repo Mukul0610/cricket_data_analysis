@@ -49,7 +49,7 @@ export default async function CategoryPage({
   
   return (
     <main className="min-h-screen bg-[#f5efe9] py-12">
-      <h1 className="text-3xl font-bold text-center mb-4">
+      <h1 className="text-3xl font-bold text-gray-500 uppercase text-center mb-4">
         {team1} vs {team2} at {venue}
       </h1>
        <CricketAnalyticsDashboard initialData={stats} />

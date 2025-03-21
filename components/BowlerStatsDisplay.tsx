@@ -552,11 +552,11 @@ export function BowlerStatsDisplay({initialData}:Props ){
         <div className="bg-white rounded-lg shadow-md p-4 mb-6">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4">
             <div className="w-full md:w-1/3">
-              <div className="relative">
+              <div className="relative text-gray-600">
                 <input
                   type="text"
                   placeholder="Search bowlers..."
-                  className="w-full p-2 pl-8 border rounded-md"
+                  className="w-full p-2 pl-8 border  rounded-md"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
@@ -567,7 +567,7 @@ export function BowlerStatsDisplay({initialData}:Props ){
             <div className="flex flex-wrap gap-2">
               <button 
                 onClick={() => setShowFilters(!showFilters)}
-                className="flex items-center gap-1 bg-gray-100 hover:bg-gray-200 px-3 py-2 rounded-md text-sm"
+                className="flex items-center gap-1 text-gray-600 bg-gray-100 hover:bg-gray-200 px-3 py-2 rounded-md text-sm"
               >
                 <Filter size={16} />
                 Filters
