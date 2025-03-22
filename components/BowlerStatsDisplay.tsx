@@ -288,7 +288,7 @@ export function BowlerStatsDisplay({ initialData }: Props) {
       </div>
       
       <div className="overflow-x-auto">
-      <div className="text-sm text-gray-500 mb-4">
+      <div className="text-sm text-gray-500 mb-4 bg-yellow-100 p-2 rounded-lg">
           <p>You can Click on a column heading to sort the table by that column</p>
         </div>
         <table className="min-w-full divide-y divide-gray-200">
