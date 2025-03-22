@@ -116,7 +116,7 @@ export function BowlerStatsDisplay({ initialData }: Props) {
         </div>
         <div className="flex space-x-2">
           <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">
-            {selectedPlayers.length}/11 Selected
+            {selectedPlayers.length} Selected
           </span>
         </div>
       </div>
@@ -185,7 +185,7 @@ export function BowlerStatsDisplay({ initialData }: Props) {
             className="flex items-center gap-2 bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg text-white transition-colors"
           >
             <Users size={16} />
-            Auto-Select Best XI
+            Auto-Select Best 11 Bowlers
           </button>
           
           <button 
@@ -283,11 +283,14 @@ export function BowlerStatsDisplay({ initialData }: Props) {
           }`}
           onClick={() => setActiveTab('selected')}
         >
-          Selected XI ({selectedPlayers.length}/11)
+          Selected Bowler ({selectedPlayers.length})
         </button>
       </div>
       
       <div className="overflow-x-auto">
+      <div className="text-sm text-gray-500 mb-4">
+          <p>You can Click on a column heading to sort the table by that column</p>
+        </div>
         <table className="min-w-full divide-y divide-gray-200">
           <thead>
             <tr className="bg-gray-50">

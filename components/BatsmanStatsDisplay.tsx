@@ -110,7 +110,7 @@ export function CricketAnalyticsDashboard({ initialData }: Props) {
         </div>
         <div className="flex space-x-2">
           <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">
-            {selectedPlayers.length}/11 Selected
+            {selectedPlayers.length} Selected
           </span>
         </div>
       </div>
@@ -179,7 +179,7 @@ export function CricketAnalyticsDashboard({ initialData }: Props) {
             className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg text-white transition-colors"
           >
             <Users size={16} />
-            Auto-Select Best XI
+            Auto-Select Best 11 Batsman
           </button>
           
           <button 
@@ -275,11 +275,15 @@ export function CricketAnalyticsDashboard({ initialData }: Props) {
           }`}
           onClick={() => setActiveTab('selected')}
         >
-          Selected XI ({selectedPlayers.length}/11)
+          Selected Players ({selectedPlayers.length})
+          {/* ({selectedPlayers.length}/11) */}
         </button>
       </div>
       
       <div className="overflow-x-auto">
+        <div className="text-sm text-gray-500 mb-4">
+          <p>You can Click on a column heading to sort the table by that column</p>
+        </div>
         <table className="min-w-full divide-y divide-gray-200">
           <thead>
             <tr className="bg-gray-50">
