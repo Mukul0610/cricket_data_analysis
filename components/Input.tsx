@@ -21,7 +21,7 @@ const teams = [
   {'id':'kkr','name':'Kolkata Knight Riders', color: 'purple'},
   {'id':'dc','name':'Delhi Capitals', color: 'blue'},
   {'id':'rr','name':'Rajasthan Royals', color: 'pink'},
-  {'id':'sh','name':'Sunrisers Hyderabad', color: 'orange'},
+  {'id':'srh','name':'Sunrisers Hyderabad', color: 'orange'},
   {'id':'lsg','name':'Lucknow Super Giants', color: 'teal'},
   {'id':'pk','name':'Punjab Kings', color: 'red'},
   {'id':'gt','name':'Gujarat Titans', color: 'blue'}
