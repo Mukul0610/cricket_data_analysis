@@ -24,7 +24,7 @@ export function Footer() {
           <div>
             <h3 className="text-lg font-semibold mb-4">Connect</h3>
             <div className="flex space-x-4">
-            <a href="https://www.instagram.com/mukulrai1729/" className="hover:text-white transition-colors">
+            <a href="https://www.instagram.com/___manjeet1729___/" className="hover:text-white transition-colors">
                 <Instagram size={20} />
               </a>
               <a href="https://x.com/mukul93028" className="hover:text-white transition-colors">
@@ -33,7 +33,7 @@ export function Footer() {
               <a href="#" className="hover:text-white transition-colors">
                 <Mail size={20} />
               </a>
-              <a href="https://www.linkedin.com/in/mukul-rai-325953235/" className="hover:text-white transition-colors">
+              <a href="https://www.linkedin.com/in/manjeetrai/" className="hover:text-white transition-colors">
                 <Linkedin size={20} />
               </a>
             </div>
