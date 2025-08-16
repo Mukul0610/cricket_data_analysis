@@ -24,23 +24,23 @@ export function Footer() {
           <div>
             <h3 className="text-lg font-semibold mb-4">Connect</h3>
             <div className="flex space-x-4">
-            <a href="https://www.instagram.com/___manjeet1729___/" className="hover:text-white transition-colors">
+            <a href="#" className="hover:text-white transition-colors">
                 <Instagram size={20} />
               </a>
-              <a href="https://x.com/mukul93028" className="hover:text-white transition-colors">
+              <a href="#" className="hover:text-white transition-colors">
                 <Twitter size={20} />
               </a>
               <a href="#" className="hover:text-white transition-colors">
                 <Mail size={20} />
               </a>
-              <a href="https://www.linkedin.com/in/manjeetrai/" className="hover:text-white transition-colors">
+              <a href="#" className="hover:text-white transition-colors">
                 <Linkedin size={20} />
               </a>
             </div>
           </div>
         </div>
         <div className="border-t border-gray-800 mt-8 pt-6 text-center text-sm">
-          <p>© 2025 CricketPro Analytics. All rights reserved.</p>
+          <p>© 2025 CriBrain Analytics. All rights reserved.</p>
         </div>
       </div>
     </footer>
